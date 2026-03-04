@@ -27,7 +27,7 @@ const fetchPost = async (url: string): Promise<string> => {
 };
 
 // -- Demo: real API call with parse boundary --
-const API = "https://jsonplaceholder.typicode.com";
+const API = "https://simplejson.vercel.app/api";
 
-console.log(await fetchPost(`${API}/posts/1`));
-console.log(await fetchPost(`${API}/users/1`));
+console.log(await fetchPost(`${API}/kHBgu13h`)); // { id: 1, title: "Hello World" }
+console.log(await fetchPost(`${API}/6qBN482F`)); // { name: "Sean", age: 30 }
