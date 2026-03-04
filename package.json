@@ -1,0 +1,20 @@
+{
+	"name": "tszod",
+	"module": "index.ts",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"check": "biome check . && tsc --noEmit",
+		"fix": "biome check --fix .",
+		"lint": "biome check .",
+		"format": "biome format --fix .",
+		"typecheck": "tsc --noEmit"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.4.5",
+		"@types/bun": "latest"
+	},
+	"peerDependencies": {
+		"typescript": "^5"
+	}
+}
