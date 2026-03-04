@@ -1,18 +1,33 @@
 import { z } from "zod/v4";
 
-const UserSchema = z.object({
-	name: z.string(),
-	age: z.number(),
+// -- Schema: single source of truth for shape + validation --
+const PostSchema = z.object({
+	id: z.number(),
+	title: z.string(),
 });
 
-type User = z.infer<typeof UserSchema>;
+// -- Inferred type: use inside your app after validation --
+type Post = z.infer<typeof PostSchema>;
 
-const greet = (user: User): string => `${user.name} is ${user.age} years old`;
+// -- Internal function: takes typed data, trusts the caller --
+const summarize = (post: Post): string => `#${post.id}: ${post.title}`;
 
-const result = UserSchema.safeParse({ name: "Sean", age: 30 });
+// -- Parse boundary: where untrusted data enters your system --
+const fetchPost = async (url: string): Promise<string> => {
+	const response = await fetch(url);
+	const json: unknown = await response.json();
 
-if (result.success) {
-	console.log(greet(result.data));
-} else {
-	console.error(result.error.issues);
-}
+	const result = PostSchema.safeParse(json);
+	if (!result.success) {
+		return `Invalid post: ${result.error.issues.map((i) => i.message).join(", ")}`;
+	}
+
+	// result.data is now Post — safe to pass to typed functions
+	return summarize(result.data);
+};
+
+// -- Demo: real API call with parse boundary --
+const API = "https://jsonplaceholder.typicode.com";
+
+console.log(await fetchPost(`${API}/posts/1`));
+console.log(await fetchPost(`${API}/users/1`));
