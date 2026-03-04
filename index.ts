@@ -15,6 +15,9 @@ const summarize = (post: Post): string => `#${post.id}: ${post.title}`;
 // -- Parse boundary: where untrusted data enters your system --
 const fetchPost = async (url: string): Promise<string> => {
 	const response = await fetch(url);
+
+	// response.json() returns `any` — we cast to `unknown` to force validation
+	// without this, TS would let you access json.title with no parse step
 	const json: unknown = await response.json();
 
 	const result = PostSchema.safeParse(json);
