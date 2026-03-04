@@ -20,6 +20,9 @@ const fetchPost = async (url: string): Promise<string> => {
 	// without this, TS would let you access json.title with no parse step
 	const json: unknown = await response.json();
 
+	// safeParse validates unknown data against the schema at runtime
+	// returns { success: true, data: Post } or { success: false, error: ZodError }
+	// no exceptions thrown — you handle both paths explicitly
 	const result = PostSchema.safeParse(json);
 	if (!result.success) {
 		return `Invalid post: ${result.error.issues.map((i) => i.message).join(", ")}`;
