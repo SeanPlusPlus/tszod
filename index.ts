@@ -29,5 +29,8 @@ const fetchPost = async (url: string): Promise<string> => {
 // -- Demo: real API call with parse boundary --
 const API = "https://simplejson.vercel.app/api";
 
+// Matches PostSchema → parses successfully → "#1: Hello World"
 console.log(await fetchPost(`${API}/kHBgu13h`)); // { id: 1, title: "Hello World" }
-console.log(await fetchPost(`${API}/6qBN482F`)); // { name: "Sean", age: 30 }
+
+// Wrong shape (no id, no title) → safeParse fails → error message
+console.log(await fetchPost(`${API}/d4ekgFj1`)); // { color: "blue", count: "many" }
